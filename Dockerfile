@@ -31,5 +31,6 @@ COPY noimages.html /
 
 VOLUME /images
 WORKDIR /images
+EXPOSE 80
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
