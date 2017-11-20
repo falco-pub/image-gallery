@@ -6,6 +6,7 @@ chmod a+rX /usr/share/nginx/html
 
 # build galleries for each directory found
 for d in */; do 
+        [ -d "$d" ] || continue
         echo "-- $d --"
         rm -rf /usr/share/nginx/html/"$d"
         if ! /fgallery/fgallery -v -j3 --max-full 3264x1836 -d -c cmt "$d" /usr/share/nginx/html/"$d"; then
@@ -18,6 +19,7 @@ done
 pushd /usr/share/nginx/html/
   rm -f body_tpl.html
   for d in */; do
+        [ -d "$d" ] || continue
         a=${d%%/}
         echo "-- $a --"
         for i in "$a/blurs/"*; do break ; done
