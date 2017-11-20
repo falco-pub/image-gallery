@@ -16,19 +16,20 @@ RUN export DEBIAN_FRONTEND noninteractive \
        libjson-xs-perl \
        jpegoptim \
        pngcrush \
-       p7zip \
+       git \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# extract in /src, mv to /app
-RUN mkdir /fgallery \
-  && curl -sL "https://github.com/wavexx/fgallery/archive/fgallery-${FGALLERY_VERSION}.tar.gz" \
-     | tar xz -C /fgallery \
-  && ln -nsf "/fgallery/fgallery-fgallery-${FGALLERY_VERSION}/"* /fgallery
+RUN git clone https://github.com/wavexx/fgallery.git /fgallery/ \
+  && cd /fgallery \
+  && rm .git -rf
 
 COPY docker-entrypoint.sh /
 RUN chmod +x /docker-entrypoint.sh
-COPY noimages.html /
 
+COPY files/* /
+RUN rm -rf /usr/share/nginx/html
+
+VOLUME /usr/share/nginx/html
 VOLUME /images
 WORKDIR /images
 EXPOSE 80
