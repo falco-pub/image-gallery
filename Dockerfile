@@ -17,7 +17,7 @@ RUN export DEBIAN_FRONTEND noninteractive \
        git \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN git clone https://github.com/wavexx/fgallery.git /fgallery/ \
+RUN git clone https://gitlab.com/wavexx/fgallery.git /fgallery/ \
   && cd /fgallery \
   && rm .git -rf
 
