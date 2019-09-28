@@ -19,19 +19,19 @@ done
 pushd /usr/share/nginx/html/
   rm -f body_tpl.html
   for d in */; do
-        [ -d "$d" ] || continue
+        [ -d "$d/" ] || continue
         a=${d%%/}
         echo "-- $a --"
         for i in "$a/blurs/"*; do break ; done
         f=${i##*/}
-        BACKGROUND="${i}"
-        NOISE="${a}/noise.png"
+        [ -r "${i}" ] && BACKGROUND="${i}"
+        [ -r "${a}/noise.png" ] && NOISE="${a}/noise.png"
         LINK="${a}/"
-        IMG="${a}/thumbs/${f}"
+        [ -r "${a}/thumbs/${f}" ] && IMG="${a}/thumbs/${f}"
         TITLE="${a}"
-        sed -e "s:{LINK}:${LINK}:g" -e "s:{IMG}:${IMG}:g" -e "s:{TITLE}:${TITLE}:g" /bodySnippet.html >> body_tpl.html
+        sed -e "s#{LINK}#${LINK}#g" -e "s#{IMG}#${IMG}#g" -e "s#{TITLE}#${TITLE}#g" /bodySnippet.html >> body_tpl.html
   done
-  sed -e "s:{BACKGROUND}:${BACKGROUND}:g" -e "s:{NOISE}:${NOISE}:g" -e "s:{BODY}:`cat body_tpl.html`:g" -e "s:{TITLE}:Albums:g" /htmlTemplate.html > index.html 
+  sed -e "s#{BACKGROUND}#${BACKGROUND}#g" -e "s#{NOISE}#${NOISE}#g" -e "s#{BODY}#`cat body_tpl.html`#g" -e "s:{TITLE}:Albums:g" /htmlTemplate.html > index.html
   rm -f body_tpl.html
   cp -a /style.css .
 popd
